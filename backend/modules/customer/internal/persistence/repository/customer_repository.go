@@ -2,21 +2,19 @@ package repository
 
 import (
 	"context"
-
 	customer_events "github.com/fabl3ss/banking_system/api/customer/events"
 	customer_model "github.com/fabl3ss/banking_system/modules/customer/internal/model"
-	customer_dao "github.com/fabl3ss/banking_system/modules/customer/internal/persistence/dao"
 	"github.com/fabl3ss/banking_system/pkg/producer"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type CustomerRepository struct {
-	cacheVerifier *customer_dao.CustomerCacheVerifierDAO
+	cacheVerifier CustomerCacheVerifierDAO
 	eventProducer *producer.Producer
 }
 
 func NewCustomerRepository(
-	cacheVerifier *customer_dao.CustomerCacheVerifierDAO,
+	cacheVerifier CustomerCacheVerifierDAO,
 	eventProducer *producer.Producer,
 ) *CustomerRepository {
 	return &CustomerRepository{
@@ -61,4 +59,9 @@ func (r *CustomerRepository) Update(ctx context.Context, customer *customer_mode
 	}
 
 	return r.eventProducer.Publish(ctx, event, "customer-events", customer.Id().String())
+}
+
+type CustomerCacheVerifierDAO interface {
+	Insert(ctx context.Context, customer *customer_model.Customer) error
+	Update(ctx context.Context, customer *customer_model.Customer) error
 }

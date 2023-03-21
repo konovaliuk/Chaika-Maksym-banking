@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package api.account.events;
+
+import "google/protobuf/timestamp.proto";
+import "common/money.proto";
+
+option go_package = "account/events";
+
+message CreditAccountEvent {
+  string accountId = 1;
+  oneof event {
+    CreditAccountCreated accountCreated = 2;
+    CreditAccountCreateFailed accountCreateFailed = 3;
+
+    CreditAccountApproved accountApproved = 4;
+    CreditAccountApproveFailed accountApproveFailed = 5;
+
+    CreditAccountClosed accountClosed = 6;
+    CreditAccountCloseFailed accountCloseFailed = 7;
+  }
+}
+
+message CreditAccountCreated {
+  string holderId = 1;
+  common.Money balance = 2;
+  google.protobuf.Timestamp openedAt = 3;
+  google.protobuf.Timestamp expiryDate = 4;
+  int64 limit = 5;
+  int64 debt = 6;
+  int32 accruedInterest = 7;
+  int32 creditRate = 8;
+}
+
+message CreditAccountCreateFailed {
+  string description = 1;
+}
+
+message CreditAccountApproved {
+  string managerId = 1;
+  google.protobuf.Timestamp approvalTime = 2;
+}
+
+message CreditAccountApproveFailed {
+  string description = 1;
+}
+
+message CreditAccountClosed {
+  google.protobuf.Timestamp closedTime = 1;
+}
+
+message CreditAccountCloseFailed {
+  string description = 1;
+}

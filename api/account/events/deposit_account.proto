@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package api.account.events;
+
+import "google/protobuf/timestamp.proto";
+import "common/money.proto";
+
+option go_package = "account/events";
+
+message DepositAccountEvent {
+  string accountId = 1;
+  oneof event {
+    DepositAccountCreated accountCreated = 2;
+    DepositAccountCreateFailed accountCreateFailed = 3;
+
+    DepositAccountApproved accountApproved = 4;
+    DepositAccountApproveFailed accountApproveFailed = 5;
+
+    DepositAccountClosed accountClosed = 6;
+    DepositAccountCloseFailed accountCloseFailed = 7;
+  }
+}
+
+message DepositAccountCreated {
+  string holderId = 1;
+  common.Money balance = 2;
+  google.protobuf.Timestamp openedAt = 3;
+  google.protobuf.Timestamp expiryDate = 4;
+  int64 depositAmount = 5;
+  int32 annualRate = 6;
+}
+
+message DepositAccountCreateFailed {
+  string description = 1;
+}
+
+message DepositAccountApproved {
+  string managerId = 1;
+  google.protobuf.Timestamp approvalTime = 2;
+}
+
+message DepositAccountApproveFailed {
+  string description = 1;
+}
+
+message DepositAccountClosed {
+  google.protobuf.Timestamp closedTime = 1;
+}
+
+message DepositAccountCloseFailed {
+  string description = 1;
+}

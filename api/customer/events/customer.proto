@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package api.customer.events;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "customer/events";
+
+message CustomerEvent {
+  string customerId = 1;
+  oneof event {
+    CustomerCreated customerCreated = 2;
+    CustomerUpdated customerUpdated = 3;
+  }
+}
+
+message CustomerCreated {
+  string email = 1;
+  string passwordHash = 2;
+  google.protobuf.Timestamp createdAt = 3;
+}
+
+message CustomerUpdated {
+  string email = 1;
+  string passwordHash = 2;
+  google.protobuf.Timestamp updatedAt = 3;
+}

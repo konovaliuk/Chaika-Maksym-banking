@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package api.manager.events;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "manager/events";
+
+message ManagerEvent {
+  string managerId = 1;
+  oneof event {
+    ManagerCreated managerCreated = 2;
+  }
+}
+
+message ManagerCreated {
+  string fullName = 1;
+  ManagerRole role = 2;
+  google.protobuf.Timestamp createdAt = 3;
+
+}
+
+enum ManagerRole {
+  MANAGER_ROLE_UNDEFINED = 0;
+  MANAGER_ROLE_ADMIN = 1;
+  MANAGER_ROLE_MODERATOR = 2;
+}

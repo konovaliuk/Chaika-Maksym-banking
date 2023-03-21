@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package api.common;
+
+option go_package = "github.com/fabl3ss/banking_system/api/common;common";
+
+message Money {
+  string currencyCode = 1;
+  int64 amount = 2;
+}

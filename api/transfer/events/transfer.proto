@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package api.transfer.events;
+
+import "google/protobuf/timestamp.proto";
+import "common/money.proto";
+
+option go_package = "transfer/events";
+
+message TransferEvent {
+  string TransferId = 1;
+  oneof event {
+    TransferCreated transferCreated = 2;
+    TransferCreateFailed transferCreateFailed = 3;
+    TransferStatusUpdated transferStatusUpdated = 4;
+    TransferStatusUpdateFailed transferStatusUpdateFiled = 5;
+  }
+}
+
+message TransferCreated {
+  string senderAccountId = 1;
+  string recipientAccountId = 2;
+  common.Money funds = 3;
+  google.protobuf.Timestamp createdAt = 4;
+  TransferStatus status = 5;
+}
+
+message TransferCreateFailed {
+  string description = 1;
+}
+
+message TransferStatusUpdated {
+  TransferStatus status = 1;
+  google.protobuf.Timestamp updatedAt = 2;
+}
+
+message TransferStatusUpdateFailed {
+  string description = 1;
+}
+
+enum TransferStatus {
+  TRANSFER_STATUS_UNDEFINED = 0;
+  TRANSFER_STATUS_PENDING = 1;
+  TRANSFER_STATUS_APPROVED = 2;
+  TRANSFER_STATUS_DECLINED = 3;
+}

@@ -2,8 +2,10 @@ package repository
 
 import (
 	"context"
+
 	customer_events "github.com/fabl3ss/banking_system/api/customer/events"
 	customer_model "github.com/fabl3ss/banking_system/modules/customer/internal/model"
+
 	"github.com/fabl3ss/banking_system/pkg/producer"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )

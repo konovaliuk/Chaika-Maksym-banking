@@ -20,4 +20,9 @@ var Module = fx.Module("customer",
 
 		customer_tests.NewCustomerStepHandler,
 	),
+	fx.Provide(
+		func(redisCacheVerifier *customer_dao.CustomerCacheVerifierDAO) customer_repository.CustomerCacheVerifierDAO {
+			return redisCacheVerifier
+		},
+	),
 )
